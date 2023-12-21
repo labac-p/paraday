@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   # This way, we can release minor versions of the adapter with "breaking" changes for older versions of Paraday
   # and then bump the version requirement on the next compatible version of paraday.
   spec.add_dependency 'multipart-post', '~> 2.0'
-  spec.add_dependency 'ruby2_keywords', '>= 0.0.4'
+  spec.add_dependency 'ruby2_keywords', '>= 0.0.2'
 
   # Includes `examples` and `spec` to allow external adapter gems to run Paraday unit and integration tests
   spec.files = Dir['CHANGELOG.md', '{examples,lib,spec}/**/*', 'LICENSE.md', 'Rakefile', 'README.md']
