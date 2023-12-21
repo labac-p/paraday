@@ -33,7 +33,8 @@ end
 # so they will be included in the test coverage report.
 Dir['./lib/**/*.rb'].sort.each { |file| require file }
 
-require 'faraday'
+require 'paraday'
+require 'json'
 require 'pry'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
@@ -119,7 +120,8 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
-  config.include Faraday::HelperMethods
+  config.include Paraday::HelperMethods
+  config.include Paraday::Multipart::HelperMethods
 end
 
 # Extends RSpec DocumentationFormatter to hide skipped tests.

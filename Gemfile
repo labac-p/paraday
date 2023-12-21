@@ -2,13 +2,14 @@
 
 source 'https://rubygems.org'
 
-# Even though we don't officially support JRuby, this dependency makes Faraday
+# Even though we don't officially support JRuby, this dependency makes Paraday
 # compatible with it, so we're leaving it in for jruby users to use it.
 gem 'jruby-openssl', '~> 0.11.0', platforms: :jruby
 
 group :development, :test do
   gem 'bake-test-external'
   gem 'coveralls_reborn', require: false
+  gem 'multipart-parser'
   gem 'pry'
   gem 'rack', '~> 2.2'
   gem 'rake'

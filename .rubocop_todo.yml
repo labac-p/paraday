@@ -11,17 +11,17 @@
 # AllowedMethods: enums
 Lint/ConstantDefinitionInBlock:
   Exclude:
-    - 'spec/faraday/options/options_spec.rb'
-    - 'spec/faraday/rack_builder_spec.rb'
-    - 'spec/faraday/request/instrumentation_spec.rb'
+    - 'spec/paraday/options/options_spec.rb'
+    - 'spec/paraday/rack_builder_spec.rb'
+    - 'spec/paraday/request/instrumentation_spec.rb'
 
 # Offense count: 11
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
   Exclude:
-    - 'spec/faraday/connection_spec.rb'
-    - 'spec/faraday/rack_builder_spec.rb'
-    - 'spec/faraday/response_spec.rb'
+    - 'spec/paraday/connection_spec.rb'
+    - 'spec/paraday/rack_builder_spec.rb'
+    - 'spec/paraday/response_spec.rb'
 
 # Offense count: 12
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods, CountRepeatedAttributes.
@@ -56,5 +56,5 @@ Metrics/PerceivedComplexity:
 # Offense count: 3
 Style/DocumentDynamicEvalDefinition:
   Exclude:
-    - 'lib/faraday/connection.rb'
-    - 'lib/faraday/options.rb'
+    - 'lib/paraday/connection.rb'
+    - 'lib/paraday/options.rb'

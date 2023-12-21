@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-module Faraday
+require 'multipart_parser/reader'
+
+module Paraday
   module HelperMethods
     def self.included(base)
       base.extend ClassMethods
@@ -33,16 +35,16 @@ module Faraday
     end
 
     def normalize(url)
-      Faraday::Utils::URI(url)
+      Paraday::Utils::URI(url)
     end
 
     def with_default_uri_parser(parser)
-      old_parser = Faraday::Utils.default_uri_parser
+      old_parser = Paraday::Utils.default_uri_parser
       begin
-        Faraday::Utils.default_uri_parser = parser
+        Paraday::Utils.default_uri_parser = parser
         yield
       ensure
-        Faraday::Utils.default_uri_parser = old_parser
+        Paraday::Utils.default_uri_parser = old_parser
       end
     end
 
@@ -64,12 +66,12 @@ module Faraday
     end
 
     def with_env_proxy_disabled
-      Faraday.ignore_env_proxy = true
+      Paraday.ignore_env_proxy = true
 
       begin
         yield
       ensure
-        Faraday.ignore_env_proxy = false
+        Paraday.ignore_env_proxy = false
       end
     end
 
@@ -91,6 +93,46 @@ module Faraday
     def big_string
       kb = 1024
       (32..126).map(&:chr).cycle.take(50 * kb).join
+    end
+  end
+
+  module Multipart
+    module HelperMethods
+      def multipart_file
+        Faraday::Multipart::FilePart.new(__FILE__, 'text/x-ruby')
+      end
+
+      # parse boundary out of a Content-Type header like:
+      #   Content-Type: multipart/form-data; boundary=gc0p4Jq0M2Yt08jU534c0p
+      def parse_multipart_boundary(ctype)
+        MultipartParser::Reader.extract_boundary_value(ctype)
+      end
+
+      # parse a multipart MIME message, returning a hash of any multipart errors
+      def parse_multipart(boundary, body)
+        reader = MultipartParser::Reader.new(boundary)
+        result = { errors: [], parts: [] }
+
+        def result.part(name)
+          hash = self[:parts].detect { |h| h[:part].name == name }
+          [hash[:part], hash[:body].join]
+        end
+
+        reader.on_part do |part|
+          result[:parts] << thispart = {
+            part: part,
+            body: []
+          }
+          part.on_data do |chunk|
+            thispart[:body] << chunk
+          end
+        end
+        reader.on_error do |msg|
+          result[:errors] << msg
+        end
+        reader.write(body)
+        result
+      end
     end
   end
 end
